@@ -26,7 +26,9 @@ int main(int argc, char** argv) {
         }
     }
 
-    line(13, 20, 80, 40, image, black);
+    line(13, 20, 80, 40, image, black);  // good
+    line(20, 13, 40, 80, image, red);    // holes
+    line(80, 40, 13, 20, image, blue);   // doesnt show
 
     image.write_tga_file("output.tga");
     return 0;
