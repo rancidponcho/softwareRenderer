@@ -20,7 +20,5 @@ clean:
 	-rm -f $(OBJECTS)
 	-rm -f $(TARGET)
 	-rm -f *.tga
-# profiler output
 	-rm -f *.out 	
-# profile information text
-	-rm -f profInfo 
+	-rm -f prof/profInfo*

@@ -15,17 +15,33 @@ void line(int x0, int y0, int x1, int y1, TGAImage& image, TGAColor color) {
         std::swap(x1, y1);
         steep = true;
     }
+
     if (x0 > x1) {  // make it left-to-right
         std::swap(x0, x1);
         std::swap(y0, y1);
     }
-    for (float x = x0; x <= x1; x++) {          // increment x0 until it reaches x1
-        float t = (x - x0) / (float)(x1 - x0);  // current x difference ratio
-        int y = y0 * (1.f - t) + y1 * t;        // use difference ratio to calculate point between y0 & y1
+
+    // difference ratio
+    const int dx = x1 - x0;
+    const int dy = y1 - y0;
+    const float derror = std::abs(dy / float(dx));
+
+    float error = 0;
+
+    int y = y0;
+
+    for (int x = x0; x <= x1; x++) {  // increment x0 until it reaches x1
+
         if (steep) {
             image.set(y, x, color);  // if transposed, de-transpose
         } else {
             image.set(x, y, color);
+        }
+
+        error += derror;  // dif ratio acts as increment
+        if (error > 0.5f) {
+            y += (y1 > y0 ? 1 : -1);
+            error -= 1.0f;
         }
     }
 }
@@ -40,11 +56,11 @@ int main(int argc, char** argv) {
     //     }
     // }
 
-    for (int i{0}; i <= 1000000; i++) {      // for better profiling info
-        line(13, 20, 80, 40, image, white);  // good
-        line(20, 13, 40, 80, image, red);    // no holes!
-        line(80, 40, 13, 20, image, blue);   // appears and covers first line!
-    }
+    // for (int i{0}; i <= 1000000; i++) {      // for better profiling info
+    line(13, 20, 80, 40, image, white);  // good
+    line(20, 13, 40, 80, image, red);    // no holes!
+    line(80, 40, 13, 20, image, blue);   // appears and covers first line!
+
     image.write_tga_file("output.tga");
     return 0;
 }
