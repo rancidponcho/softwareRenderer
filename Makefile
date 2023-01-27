@@ -1,4 +1,4 @@
-SYSCONF_LINK = g++
+SYSCONF_LINK = g++ -ggdb -g -pg -O0
 CPPFLAGS     =
 LDFLAGS      =
 LIBS         = -lm
@@ -20,3 +20,7 @@ clean:
 	-rm -f $(OBJECTS)
 	-rm -f $(TARGET)
 	-rm -f *.tga
+# profiler output
+	-rm -f *.out 	
+# profile information text
+	-rm -f profInfo 
